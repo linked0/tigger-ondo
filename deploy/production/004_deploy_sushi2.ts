@@ -1,5 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
+import { ethers } from "hardhat";
 import { getAddress } from "../../scripts/utils/helpers";
 
 const deploySushiV2: DeployFunction = async (
@@ -11,7 +12,8 @@ const deploySushiV2: DeployFunction = async (
   const address = getAddress(hre);
 
   // TODO: fill in registry address
-  const registryAddress = "";
+  const registry = await ethers.getContract("Registry");
+  const registryAddress = registry.address;
 
   await deploy("SushiStakingV2Strategy", {
     from: deployer,

@@ -23,26 +23,32 @@ export function shouldBehaveLikeVaultDuringUniv2Investments() {
     this.juniorInvested = ethers.BigNumber.from(amounts[1]).div(
       this.jrDecimalsFactor
     );
-    logger.info(
+    console.log(
       `${this.vaultParams.seniorSym} Amount Invested: ${this.seniorInvested}, ${
         this.vaultParams.juniorSym
       } Amount Invested: ${this.juniorInvested} at ${new Date(
         this.investAt * 1000
       ).toISOString()}`
     );
-    await this.vault.invest(this.vaultId, 0, 0);
+
+    // print log about amounts information
+    console.log("The first amounts", amounts);
+
+    const tx = await this.vault.invest(this.vaultId, 0, 0);
+    const recepit = await tx.wait();
+    // console.log("The second amounts:", recepit)
     const jrLeftOverInStrategyAfterInvest: string = (
       await this.juniorTokenContract.balanceOf(this.strategy.address)
     ).toString();
     const srLeftOverInStrategyAfterInvest: string = (
       await this.seniorTokenContract.balanceOf(this.strategy.address)
     ).toString();
-    logger.debug(
+    console.log(
       `${await this.juniorTokenContract.symbol()} balance in strategy after invest: ${ethers.BigNumber.from(
         jrLeftOverInStrategyAfterInvest
       ).div(this.jrDecimalsFactor)}`
     );
-    logger.debug(
+    console.log(
       `${await this.seniorTokenContract.symbol()} balance in strategy after invest: ${ethers.BigNumber.from(
         srLeftOverInStrategyAfterInvest
       ).div(this.srDecimalsFactor)}`

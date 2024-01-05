@@ -2,6 +2,7 @@
 pragma solidity 0.8.3;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
 
 contract Ondo is Ownable {
   /// @notice EIP-20 token name for this token
@@ -197,6 +198,22 @@ contract Ondo is Ownable {
     return _delegate(msg.sender, delegatee);
   }
 
+  function bytes32ToString(bytes32 _bytes32)
+    public
+    pure
+    returns (string memory)
+  {
+    uint8 i = 0;
+    while (i < 32 && _bytes32[i] != 0) {
+      i++;
+    }
+    bytes memory bytesArray = new bytes(i);
+    for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
+      bytesArray[i] = _bytes32[i];
+    }
+    return string(bytesArray);
+  }
+
   /**
    * @notice Delegates votes from signatory to `delegatee`
    * @param delegatee The address to delegate votes to
@@ -228,6 +245,9 @@ contract Ondo is Ownable {
     bytes32 digest =
       keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
     address signatory = ecrecover(digest, v, r, s);
+    console.log("signatory:", signatory);
+    console.log("owner:", owner());
+    console.log("delegate:", delegatee);
     require(signatory != address(0), "Ondo::delegateBySig: invalid signature");
     require(nonce == nonces[signatory]++, "Ondo::delegateBySig: invalid nonce");
     require(
@@ -330,6 +350,7 @@ contract Ondo is Ownable {
       "Ondo::_transferTokens: transfer amount overflows"
     );
     emit Transfer(src, dst, amount);
+    console.log("Transfer amount:", amount);
 
     _moveDelegates(delegates[src], delegates[dst], amount);
   }
@@ -346,6 +367,7 @@ contract Ondo is Ownable {
           srcRepNum > 0 ? checkpoints[srcRep][srcRepNum - 1].votes : 0;
         uint96 srcRepNew =
           sub96(srcRepOld, amount, "Ondo::_moveVotes: vote amount underflows");
+        console.log("srcRepNew:", srcRepNew);
         _writeCheckpoint(srcRep, srcRepNum, srcRepOld, srcRepNew);
       }
 

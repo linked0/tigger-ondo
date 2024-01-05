@@ -77,7 +77,15 @@ describe("AllPairVault", async function () {
     setup();
     it("can only deposit after start time", async function () {
       const startTime = (await provider.getBlock("latest")).timestamp + 30;
+      console.log(
+        "Bal token0 of account0=0",
+        await pool.token0.balanceOf(accounts[0])
+      );
       await pool.mint("zero", amountIn.mul(2), accounts[0]);
+      console.log(
+        "Bal token0 of account0=1",
+        await pool.token0.balanceOf(accounts[0])
+      );
       await pool.token0.approve(vault.address, amountIn.mul(2));
 
       const vaultParams = {
@@ -106,10 +114,17 @@ describe("AllPairVault", async function () {
       );
       await provider.send("evm_mine", [startTime + 1]);
     });
-
     it("can get multiple vaults back from getVault", async function () {
       const startTime = (await provider.getBlock("latest")).timestamp + 30;
       await pool.mint("zero", amountIn.mul(2), accounts[0]);
+      console.log(
+        "Bal token0 of account0-2",
+        await pool.token0.balanceOf(accounts[0])
+      );
+      console.log(
+        "Bal token1 of account0-2",
+        await pool.token1.balanceOf(accounts[0])
+      );
       await pool.token0.approve(vault.address, amountIn.mul(2));
 
       const vaultParams = {
@@ -148,26 +163,67 @@ describe("AllPairVault", async function () {
       const second = await vault.getVaults(1, 2);
       const third = await vault.getVaults(2, 2);
 
+      // console.log(third);
       expect(first.length).to.equal(3);
       expect(second.length).to.equal(2);
       expect(third.length).to.equal(1);
     });
     it("deposits after start time", async function () {
+      console.log(
+        "Bal token0 of account0",
+        await pool.token0.balanceOf(accounts[0])
+      );
       await vault.deposit(delayedVaultId, 0, amountIn);
       expect(await get.seniorDeposited(vault, delayedVaultId)).equal(amountIn);
+      // print balance of token1 of accounts[1]
       await pool.mint("one", amountIn.mul(2), accounts[1]);
+      console.log(
+        "Bal toekn1 of account1",
+        await pool.token1.balanceOf(accounts[1])
+      );
       await pool.token1
         .connect(signers[1])
         .approve(vault.address, amountIn.mul(2));
       await vault.connect(signers[1]).deposit(delayedVaultId, 1, amountIn);
+      console.log(
+        "Bal token0 of account0-",
+        await pool.token0.balanceOf(accounts[0])
+      );
+      console.log(
+        "Bal toekn1 of account1-",
+        await pool.token1.balanceOf(accounts[1])
+      );
     });
     it("deposits exceed user cap", async function () {
       await expect(
         vault.connect(signers[1]).deposit(delayedVaultId, 1, BigNumber.from(1))
       ).revertedWith("Exceeds user cap");
     });
+    // it("deposits token0 from account1", async function () {
+    //   await pool.mint("zero", amountIn, accounts[1]);
+    //   await pool.token0.connect(signers[1]).approve(vault.address, amountIn);
+    //   await vault.connect(signers[1]).deposit(delayedVaultId, 0, BigNumber.from(1))
+    // });
     it("deposits exceed tranche cap", async function () {
       await pool.mint("one", amountIn, accounts[0]);
+
+      console.log(
+        "Bal toekn0 of account0",
+        await pool.token0.balanceOf(accounts[0])
+      );
+      console.log(
+        "Bal toekn0 of account1",
+        await pool.token0.balanceOf(accounts[1])
+      );
+      console.log(
+        "Bal toekn1 of account0",
+        await pool.token1.balanceOf(accounts[0])
+      );
+      console.log(
+        "Bal toekn1 of account1",
+        await pool.token1.balanceOf(accounts[1])
+      );
+
       await pool.token1.connect(signers[0]).approve(vault.address, amountIn);
       await vault.deposit(delayedVaultId, 1, amountIn); // This should exceed tranche cap
 

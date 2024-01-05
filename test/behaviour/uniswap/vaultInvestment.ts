@@ -51,6 +51,7 @@ export function shouldBehaveLikeVaultDuringInvestmentSetup() {
           } ${await this.juniorTokenContract.symbol()} for signer ${i} using depositETH function`
         );
       } else {
+        console.log(`${i}: ${this.accounts[i]}`);
         const juniorTokenBalance = await this.juniorTokenContract.balanceOf(
           this.accounts[i]
         );

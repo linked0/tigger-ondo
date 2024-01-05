@@ -10,7 +10,7 @@ import { shouldValidateUniStrategyDeployment } from "./behaviour/uniswap/uniStra
 import { shouldBehaveLikeVaultDuringUniv2Investments } from "./behaviour/uniswap/invest";
 use(solidity);
 
-describe("BondStrategy - USDC-BOND helper", async function () {
+describe.only("BondStrategy - USDC-BOND helper", async function () {
   let signers: SignerWithAddress[];
   before(async function () {
     this.provider = ethers.provider;
@@ -48,6 +48,7 @@ describe("BondStrategy - USDC-BOND helper", async function () {
       seniorUserCap: ethers.BigNumber.from(10).pow(20).mul(5), //max user cap 400 ETH
     };
     logger.debug("vault setup complete");
+    console.log("vault setup complete");
 
     //************setup harvest wait duration****************** */
     this.harvestWaitDays = 14; //wait for these many days before next harvest

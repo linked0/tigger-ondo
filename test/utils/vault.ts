@@ -782,10 +782,12 @@ class UnilikeFixture {
       const sharesBefore = await unilike.strategy
         .vaults(unilike.vaultId)
         .then((x) => new Decimal(x.shares.toString()));
-      const [lpBefore] = await unilike.strategy.lpFromShares(
+      const [lpBefore, shBefore] = await unilike.strategy.lpFromShares(
         unilike.vaultId,
         sharesBefore.toFixed(0)
       );
+      console.log("lpBefore", lpBefore.toString(), shBefore.toString());
+
       const [seniorBalanceBefore, juniorBalanceBefore] = await Promise.all([
         unilike.srERC20.balanceOf(signer.address),
         unilike.jrERC20.balanceOf(signer.address),
@@ -802,10 +804,11 @@ class UnilikeFixture {
       const lp = await unilike.pool
         .mintAndAdd(amountIn, amountIn, signer.address)
         .then((lp) => new Decimal(lp.toString()));
-      const [shares] = await unilike.strategy.sharesFromLp(
+      const [shares, shAfter] = await unilike.strategy.sharesFromLp(
         unilike.vaultId,
         lp.toFixed(0)
       );
+      console.log("shares", shares.toString(), shAfter.toString());
       await unilike.pool.pool
         .connect(signer)
         .approve(allPair.address, lp.toFixed());
