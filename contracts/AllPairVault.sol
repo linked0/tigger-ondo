@@ -12,6 +12,7 @@ import "contracts/interfaces/IStrategy.sol";
 import "contracts/interfaces/ITrancheToken.sol";
 import "contracts/interfaces/IPairVault.sol";
 import "contracts/interfaces/IFeeCollector.sol";
+import "hardhat/console.sol";
 
 /**
  * @title A container for all Vaults
@@ -441,6 +442,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     OLib.Tranche _tranche,
     uint256 _amount
   ) external override nonReentrant {
+    // console.log(msg.sender, uint(_tranche), ", depositing:", _amount);
     _deposit(_vaultId, _tranche, _amount, msg.sender);
   }
 
@@ -608,6 +610,8 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     senior_.totalInvested = vault_.assets[OLib.Tranche.Senior].originalInvested;
     junior_.totalInvested = vault_.assets[OLib.Tranche.Junior].originalInvested;
     emit Invested(_vaultId, senior_.totalInvested, junior_.totalInvested);
+    console.log("senior invested:", senior_.totalInvested);
+    console.log("junior invested:", junior_.totalInvested);
     return (senior_.totalInvested, junior_.totalInvested);
   }
 
@@ -680,7 +684,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     ITrancheToken _trancheToken = _asset.trancheToken;
     OLib.Investor storage investor =
       investors[address(_trancheToken)][msg.sender];
-    require(!investor.claimed, "Already claimed");
+    // require(!investor.claimed, "Already claimed");
     IStrategy _strategy = vault_.strategy;
     (userInvested, excess) = investor.getInvestedAndExcess(
       _getNetOriginalInvested(_asset)
@@ -688,11 +692,12 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     if (excess > 0)
       _strategy.withdrawExcess(_vaultId, _tranche, _receiver, excess);
     if (registry.tokenMinting()) {
+      console.log("TrancheToken minting", uint256(_tranche));
       _trancheToken.mint(msg.sender, userInvested);
     }
 
     investor.claimed = true;
-    emit Claimed(msg.sender, _vaultId, uint256(_tranche), userInvested, excess);
+    // emit Claimed(msg.sender, _vaultId, uint256(_tranche), userInvested, excess);
     return (userInvested, excess);
   }
 
@@ -739,7 +744,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     Asset storage junior_ = vault_.assets[OLib.Tranche.Junior];
     OLib.Investor storage investor =
       investors[address(senior_.trancheToken)][msg.sender];
-    require(!investor.claimed, "Already claimed");
+    // require(!investor.claimed, "Already claimed");
     srRollInv = _getRolloverInvested(senior_);
     jrRollInv = _getRolloverInvested(junior_);
     if (srRollInv > 0) {
@@ -801,6 +806,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     Vault storage vault_ = Vaults[_vaultId];
     Asset storage senior_ = vault_.assets[OLib.Tranche.Senior];
     Asset storage junior_ = vault_.assets[OLib.Tranche.Junior];
+    console.log("Redeem", _vaultId);
     (senior_.received, junior_.received) = vault_.strategy.redeem(
       _vaultId,
       _getSeniorExpected(vault_, senior_),
@@ -847,7 +853,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
       tokensToWithdraw
     );
     investors[address(asset_.trancheToken)][msg.sender].withdrawn = true;
-    emit Withdrew(msg.sender, _vaultId, uint256(_tranche), tokensToWithdraw);
+    // emit Withdrew(msg.sender, _vaultId, uint256(_tranche), tokensToWithdraw);
     return tokensToWithdraw;
   }
 

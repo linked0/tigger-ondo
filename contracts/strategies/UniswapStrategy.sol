@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "contracts/strategies/BasePairLPStrategy.sol";
 import "contracts/vendor/uniswap/UniswapV2Library.sol";
 import "contracts/Registry.sol";
+import "hardhat/console.sol";
 
 /**
  * @title Access Uniswap
@@ -212,6 +213,8 @@ contract UniswapStrategy is BasePairLPStrategy {
     vault_.junior.ondoSafeIncreaseAllowance(address(uniRouter02), _totalJunior);
     uint256 lpTokens;
 
+    console.log("seniorInvested", seniorInvested);
+    console.log("juniorInvested", juniorInvested);
     (seniorInvested, juniorInvested, lpTokens) = uniRouter02.addLiquidity(
       address(vault_.senior),
       address(vault_.junior),
@@ -225,6 +228,7 @@ contract UniswapStrategy is BasePairLPStrategy {
     vault_.shares += lpTokens;
     vault_.seniorExcess = _totalSenior - seniorInvested + _extraSenior;
     vault_.juniorExcess = _totalJunior - juniorInvested + _extraJunior;
+    console.log("invest######vault_.shares", vault_.shares);
     emit Invest(_vaultId, vault_.shares);
   }
 
@@ -318,6 +322,7 @@ contract UniswapStrategy is BasePairLPStrategy {
         address(uniRouter02),
         vault_.shares
       );
+      console.log("redeem::::::vault_.shares", vault_.shares);
       (seniorReceived, juniorReceived) = uniRouter02.removeLiquidity(
         address(vault_.senior),
         address(vault_.junior),

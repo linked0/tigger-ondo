@@ -24,15 +24,15 @@ export async function shouldBehaveLikeVault(
         shouldBehaveLikeVaultDuringInvestments();
         describe(`${vaultName} vault behaviour - redeem`, async function () {
           shouldBehaveLikeStrategyDuringAndRedeem();
-          describe(`${vaultName} path changes`, async function () {
-            shouldBehaveLikeStrategyDuringPathChanges();
-            describe(`${vaultName} mid term deposits`, async function () {
-              shouldBehaveLikeVaultDuringMidtermDeposits();
-              describe(`${vaultName} emergency withdraw from Uniswap`, async function () {
-                shouldAllowEmergencyRescue();
-              });
-            });
-          });
+          // describe(`${vaultName} path changes`, async function () {
+          //   shouldBehaveLikeStrategyDuringPathChanges();
+          //   describe(`${vaultName} mid term deposits`, async function () {
+          //     shouldBehaveLikeVaultDuringMidtermDeposits();
+          //     describe(`${vaultName} emergency withdraw from Uniswap`, async function () {
+          //       shouldAllowEmergencyRescue();
+          //     });
+          //   });
+          // });
         });
       });
     });

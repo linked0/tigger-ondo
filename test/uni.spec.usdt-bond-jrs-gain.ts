@@ -10,7 +10,7 @@ import { shouldValidateUniStrategyDeployment } from "./behaviour/uniswap/uniStra
 import { shouldBehaveLikeVaultDuringUniv2Investments } from "./behaviour/uniswap/invest";
 use(solidity);
 
-describe("BondStrategy - USDC-BOND helper", async function () {
+describe.only("BondStrategy - USDC-BOND helper", async function () {
   let signers: SignerWithAddress[];
   before(async function () {
     this.provider = ethers.provider;

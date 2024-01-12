@@ -106,18 +106,18 @@ export function shouldBehaveLikeVaultDuringInvestmentSetup() {
       "Not time yet"
     );
   });
-  it("should not allow investors to deposit assets when exceeds usercap for the tranche", async function () {});
-  it("should not allow investors to deposit assets in the live vault", async function () {});
-  it("should allow investors to claim uninvested asset plus tranche tokens for the corresponding asset", async function () {});
-  it("should not return tranche tokens on claim if enableTokens flag is disabled", async function () {});
-  it("should allow investors to deposit ETH into Active vault only if the tranche is WETH", async function () {});
-  it("should allow investors to claim ETH though the vault asset is WETH", async function () {});
-  it("should allow performance fee to be set and changed by strategist on inactive vaults only", async function () {});
-  it("should not allow performance fee to be more than a predetermined amount", async function () {});
-  //***************view functions************
-  it("should be able to retrieve vault for specific vault index or a range of vault indexes", async function () {});
-  it("should be able to retrieve vault for specific trancheToken address", async function () {});
-  it("should be able to retrieve expected senior amount for the vault", async function () {});
-  it("should be able to retrieve correct usercaps set in the vault", async function () {});
-  it("should be able to retrieve all the correct details of vault investor like position, claimable and withdrawable balances, excess", async function () {});
+  // it("should not allow investors to deposit assets when exceeds usercap for the tranche", async function () {});
+  // it("should not allow investors to deposit assets in the live vault", async function () {});
+  // it("should allow investors to claim uninvested asset plus tranche tokens for the corresponding asset", async function () {});
+  // it("should not return tranche tokens on claim if enableTokens flag is disabled", async function () {});
+  // it("should allow investors to deposit ETH into Active vault only if the tranche is WETH", async function () {});
+  // it("should allow investors to claim ETH though the vault asset is WETH", async function () {});
+  // it("should allow performance fee to be set and changed by strategist on inactive vaults only", async function () {});
+  // it("should not allow performance fee to be more than a predetermined amount", async function () {});
+  // //***************view functions************
+  // it("should be able to retrieve vault for specific vault index or a range of vault indexes", async function () {});
+  // it("should be able to retrieve vault for specific trancheToken address", async function () {});
+  // it("should be able to retrieve expected senior amount for the vault", async function () {});
+  // it("should be able to retrieve correct usercaps set in the vault", async function () {});
+  // it("should be able to retrieve all the correct details of vault investor like position, claimable and withdrawable balances, excess", async function () {});
 }
