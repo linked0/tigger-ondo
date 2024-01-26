@@ -273,13 +273,13 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     require(_params.hurdleRate < 1e8, "Maximum hurdle is 10000%");
     require(denominator <= _params.hurdleRate, "Min hurdle is 100%");
 
-    require(
-      _params.seniorAsset != address(0) &&
-        _params.seniorAsset != address(this) &&
-        _params.juniorAsset != address(0) &&
-        _params.juniorAsset != address(this),
-      "Invalid target"
-    );
+    // require(
+    //   _params.seniorAsset != address(0) &&
+    //     _params.seniorAsset != address(this) &&
+    //     _params.juniorAsset != address(0) &&
+    //     _params.juniorAsset != address(this),
+    //   "Invalid target"
+    // );
     uint256 investAtTime = _params.startTime + _params.enrollment;
     uint256 redeemAtTime = investAtTime + _params.duration;
     TrancheToken seniorITrancheToken;
@@ -300,7 +300,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
       );
       vaultIDs.add(vaultId);
       Vault storage vault_ = Vaults[vaultId];
-      require(address(vault_.strategist) == address(0), "Duplicate");
+      // require(address(vault_.strategist) == address(0), "Duplicate");
       vault_.strategy = IStrategy(_params.strategy);
       vault_.creator = msg.sender;
       vault_.strategist = _params.strategist;
@@ -521,7 +521,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     atState(_vaultId, OLib.State.Live)
     returns (uint256 seniorTokensOwed, uint256 juniorTokensOwed)
   {
-    require(registry.tokenMinting(), "Vault tokens inactive");
+    // require(registry.tokenMinting(), "Vault tokens inactive");
     Vault storage vault_ = Vaults[_vaultId];
     IERC20 pool;
     (seniorTokensOwed, juniorTokensOwed, pool) = getDepositLp(
@@ -610,8 +610,8 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     senior_.totalInvested = vault_.assets[OLib.Tranche.Senior].originalInvested;
     junior_.totalInvested = vault_.assets[OLib.Tranche.Junior].originalInvested;
     emit Invested(_vaultId, senior_.totalInvested, junior_.totalInvested);
-    console.log("senior invested:", senior_.totalInvested);
-    console.log("junior invested:", junior_.totalInvested);
+    console.log("@@@ senior invested:", senior_.totalInvested);
+    console.log("@@@ junior invested:", junior_.totalInvested);
     return (senior_.totalInvested, junior_.totalInvested);
   }
 
@@ -643,6 +643,8 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
         vault_.assets[OLib.Tranche.Junior].trancheCap
       );
     }
+    console.log("### seniorInvestableAmount:", seniorInvestableAmount);
+    console.log("### juniorInvestableAmount:", juniorInvestableAmount);
 
     (
       vault_.assets[OLib.Tranche.Senior].originalInvested,
@@ -692,12 +694,12 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     if (excess > 0)
       _strategy.withdrawExcess(_vaultId, _tranche, _receiver, excess);
     if (registry.tokenMinting()) {
-      console.log("TrancheToken minting", uint256(_tranche));
+      // console.log("TrancheToken minting", uint256(_tranche));
       _trancheToken.mint(msg.sender, userInvested);
     }
 
     investor.claimed = true;
-    // emit Claimed(msg.sender, _vaultId, uint256(_tranche), userInvested, excess);
+    emit Claimed(msg.sender, _vaultId, uint256(_tranche), userInvested, excess);
     return (userInvested, excess);
   }
 
@@ -806,13 +808,14 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     Vault storage vault_ = Vaults[_vaultId];
     Asset storage senior_ = vault_.assets[OLib.Tranche.Senior];
     Asset storage junior_ = vault_.assets[OLib.Tranche.Junior];
-    console.log("Redeem", _vaultId);
+    // console.log("Redeem", _vaultId);
     (senior_.received, junior_.received) = vault_.strategy.redeem(
       _vaultId,
       _getSeniorExpected(vault_, senior_),
       _seniorMinReceived,
       _juniorMinReceived
     );
+
     junior_.received -= takePerformanceFee(vault_, _vaultId);
 
     emit Redeemed(_vaultId, senior_.received, junior_.received);
@@ -853,7 +856,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
       tokensToWithdraw
     );
     investors[address(asset_.trancheToken)][msg.sender].withdrawn = true;
-    // emit Withdrew(msg.sender, _vaultId, uint256(_tranche), tokensToWithdraw);
+    emit Withdrew(msg.sender, _vaultId, uint256(_tranche), tokensToWithdraw);
     return tokensToWithdraw;
   }
 
@@ -896,7 +899,7 @@ contract AllPairVault is OndoRegistryClient, IPairVault {
     atState(_vaultId, OLib.State.Live)
     returns (uint256 seniorTokensNeeded, uint256 juniorTokensNeeded)
   {
-    require(registry.tokenMinting(), "Vault tokens inactive");
+    // require(registry.tokenMinting(), "Vault tokens inactive");
     Vault storage vault_ = Vaults[_vaultId];
     (seniorTokensNeeded, juniorTokensNeeded) = getWithdrawLp(_vaultId, _shares);
     vault_.assets[OLib.Tranche.Senior].trancheToken.burn(

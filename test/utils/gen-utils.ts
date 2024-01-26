@@ -75,6 +75,7 @@ export async function buyTokensWithTokens(
   )
     .div(new Decimal(10).pow(await buyTokenContract.decimals()).toString())
     .toString();
+
   const actualNumberOfTokensToBeBought = new Decimal(10)
     .pow(await buyTokenContract.decimals())
     .mul(numberOfTokensToBeBought); //find the actual number of tokens including decimals
@@ -105,6 +106,8 @@ export async function buyTokensWithTokens(
       account,
       (await provider.getBlock("latest")).timestamp + 2000
     );
+
+  // console.log("The response:", await response.wait());
   const buyTokenBalanceAfterTx = ethers.BigNumber.from(
     await buyTokenContract.balanceOf(account)
   )
@@ -160,6 +163,11 @@ export async function computeHarvestAt(
   harvestAtComputed = harvestAtComputed + 60 * 60 * 24 * days;
   return harvestAtComputed;
 }
+
+2911608768321;
+3000000000000000000000;
+88678798019;
+3000000000000000000000;
 
 export async function allocateFunds() {
   for (let i = 0; i < 6; i++) {

@@ -37,6 +37,24 @@ export function shouldBehaveLikeVaultDuringInvestmentSetup() {
         (await provider.getBlock("latest")).timestamp * 1000
       ).toISOString()}`
     );
+
+    const sellTokenBalanceBeforeTx = ethers.BigNumber.from(
+      await this.sellTokenContract.balanceOf(this.accounts[0])
+    )
+      .div(
+        new Decimal(10).pow(await this.sellTokenContract.decimals()).toString()
+      )
+      .toString();
+    const buyTokenBalanceBeforeTx = ethers.BigNumber.from(
+      await this.buyTokenContract.balanceOf(this.accounts[0])
+    )
+      .div(
+        new Decimal(10).pow(await this.buyTokenContract.decimals()).toString()
+      )
+      .toString();
+    console.log("Initial sellTokenBalanceBeforeTx", sellTokenBalanceBeforeTx);
+    console.log("Initial buyTokenBalanceBeforeTx", buyTokenBalanceBeforeTx);
+
     //signers 0,1,2 investing in junior tranche
     for (let i = 0; i < 3; i++) {
       if ((await this.juniorTokenContract.address) === mainnet.assets.weth) {

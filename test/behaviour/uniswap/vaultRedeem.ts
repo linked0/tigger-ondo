@@ -32,7 +32,34 @@ export function shouldBehaveLikeStrategyDuringAndRedeem(): void {
         );
       }
       await this.vault.claim(this.vaultId, 0);
-      for (let i = 0; i < this.tradesCount; i++) {
+
+      const OriginalsellTokenBalanceBeforeTx = ethers.BigNumber.from(
+        await this.sellTokenContract.balanceOf(this.accounts[0])
+      )
+        .div(
+          new Decimal(10)
+            .pow(await this.sellTokenContract.decimals())
+            .toString()
+        )
+        .toString();
+      const OriginalbuyTokenBalanceBeforeTx = ethers.BigNumber.from(
+        await this.buyTokenContract.balanceOf(this.accounts[0])
+      )
+        .div(
+          new Decimal(10).pow(await this.buyTokenContract.decimals()).toString()
+        )
+        .toString();
+
+      console.log(
+        "Original sellTokenBalanceBeforeTx",
+        OriginalsellTokenBalanceBeforeTx
+      );
+      console.log(
+        "Original buyTokenBalanceBeforeTx",
+        OriginalbuyTokenBalanceBeforeTx
+      );
+
+      for (let i = 0; i < 10; i++) {
         await buyTokensWithTokens(
           this.signers[0],
           this.accounts[0],
@@ -45,20 +72,40 @@ export function shouldBehaveLikeStrategyDuringAndRedeem(): void {
           this.buyTokenContract,
           true
         );
-        await buyTokensWithTokens(
-          this.signers[0],
-          this.accounts[0],
-          await this.buyTokenWithTokenPath.reverse(),
-          this.srToTrade - this.srToTradeDelta,
-          this.jrToTrade,
-          0,
-          this.routerContract,
-          this.buyTokenContract,
-          this.sellTokenContract,
-          true
-        );
-        this.buyTokenWithTokenPath.reverse();
+
+        // await buyTokensWithTokens(
+        //   this.signers[0],
+        //   this.accounts[0],
+        //   await this.buyTokenWithTokenPath.reverse(),
+        //   this.srToTrade - this.srToTradeDelta,
+        //   this.jrToTrade,
+        //   0,
+        //   this.routerContract,
+        //   this.buyTokenContract,
+        //   this.sellTokenContract,
+        //   true
+        // );
+        // this.buyTokenWithTokenPath.reverse();
       }
+
+      const sellTokenBalanceBeforeTx = ethers.BigNumber.from(
+        await this.sellTokenContract.balanceOf(this.accounts[0])
+      )
+        .div(
+          new Decimal(10)
+            .pow(await this.sellTokenContract.decimals())
+            .toString()
+        )
+        .toString();
+      const buyTokenBalanceBeforeTx = ethers.BigNumber.from(
+        await this.buyTokenContract.balanceOf(this.accounts[0])
+      )
+        .div(
+          new Decimal(10).pow(await this.buyTokenContract.decimals()).toString()
+        )
+        .toString();
+      console.log("sellTokenBalanceBeforeTx", sellTokenBalanceBeforeTx);
+      console.log("buyTokenBalanceBeforeTx", buyTokenBalanceBeforeTx);
     }
   );
   it("should not redeem if the slippage is too high", async function () {

@@ -213,8 +213,6 @@ contract UniswapStrategy is BasePairLPStrategy {
     vault_.junior.ondoSafeIncreaseAllowance(address(uniRouter02), _totalJunior);
     uint256 lpTokens;
 
-    console.log("seniorInvested", seniorInvested);
-    console.log("juniorInvested", juniorInvested);
     (seniorInvested, juniorInvested, lpTokens) = uniRouter02.addLiquidity(
       address(vault_.senior),
       address(vault_.junior),
@@ -225,6 +223,16 @@ contract UniswapStrategy is BasePairLPStrategy {
       address(this),
       block.timestamp
     );
+    (uint256 reserveA, uint256 reserveB) =
+      UniswapV2Library.getReserves(
+        uniRouter02.factory(),
+        address(vault_.senior),
+        address(vault_.junior)
+      );
+    console.log("invest######reserveA: %s, reserveB: %s", reserveA, reserveB);
+    console.log("@@@ seniorInvested", seniorInvested);
+    console.log("@@@ juniorInvested", juniorInvested);
+
     vault_.shares += lpTokens;
     vault_.seniorExcess = _totalSenior - seniorInvested + _extraSenior;
     vault_.juniorExcess = _totalJunior - juniorInvested + _extraJunior;
@@ -333,6 +341,10 @@ contract UniswapStrategy is BasePairLPStrategy {
         block.timestamp
       );
     }
+
+    console.log("redeem::::::seniorExpected", _seniorExpected);
+    console.log("redeem::::::seniorReceived", seniorReceived);
+    console.log("redeem::::::juniorReceived", juniorReceived);
     if (seniorReceived < _seniorExpected) {
       (seniorReceived, juniorReceived) = swapForSr(
         address(vault_.senior),
@@ -365,6 +377,8 @@ contract UniswapStrategy is BasePairLPStrategy {
       juniorReceived + vault_.juniorExcess
     );
     emit Redeem(_vaultId);
+    console.log("redeem::::::seniorReceived 2", seniorReceived);
+    console.log("redeem::::::juniorReceived 2", juniorReceived);
     return (seniorReceived, juniorReceived);
   }
 
