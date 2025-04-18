@@ -779,8 +779,14 @@ class UniPoolMock extends UniPool {
     await this.token1.mint(this.minterAddress, amt1);
     await this.token0.approve(this.router.address, amt0);
     await this.token1.approve(this.router.address, amt1);
-    // console.log("Bal token0 of account0", await this.token0.balanceOf(this.minterAddress));
-    // console.log("Bal token1 of account0", await this.token1.balanceOf(this.minterAddress));
+    console.log(
+      "Bal token0 of account0",
+      await this.token0.balanceOf(this.minterAddress)
+    );
+    console.log(
+      "Bal token1 of account0",
+      await this.token1.balanceOf(this.minterAddress)
+    );
     const liqBefore = await this.pool
       .balanceOf(_to)
       .catch((x) => BigNumber.from(0));

@@ -47,6 +47,7 @@ describe("Uni", () => {
       );
     }
     const bal = await uniPool.pool.balanceOf(signers[1].address);
+    console.log(bal.toString());
     expect(bal.toString()).not.eq("0");
   });
   it("test uniPull", async function () {

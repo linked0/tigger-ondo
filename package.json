@@ -37,7 +37,11 @@
     "deploy:bsc": "export BLOCKCHAIN='bsc' && hardhat --network bsc deploy",
     "deploy:bsc-testnet": "export BLOCKCHAIN='bsc' && hardhat --network 'bsc-testnet' deploy",
     "deploy:polygon": "export BLOCKCHAIN='polygon' && hardhat --network polygon deploy",
-    "deploy:mumbai": "export BLOCKCHAIN='polygon' && hardhat --network mumbai deploy"
+    "deploy:mumbai": "export BLOCKCHAIN='polygon' && hardhat --network mumbai deploy",
+    "deploy:marigold": "export BLOCKCHAIN='ethereum' && hardhat --network marigold deploy",
+    "test:ondo": "export BLOCKCHAIN='ethereum' && export FORK_FROM_BLOCK_NUMBER=13537712 && export CHAIN_ID=1 && hardhat test test/ondo.spec.ts",
+    "test:uni": "export BLOCKCHAIN='ethereum' && export FORK_FROM_BLOCK_NUMBER=13537712 && export CHAIN_ID=1 && hardhat test test/uni.spec.ts",
+    "test:uni-usdt": "export BLOCKCHAIN='ethereum' && export FORK_FROM_BLOCK_NUMBER=13537712 && export CHAIN_ID=1 && hardhat test test/uni.spec.usdt-bond.ts"
   },
   "dependencies": {
     "@nomiclabs/hardhat-waffle": "2.0.1",
@@ -93,5 +97,6 @@
     "typescript": "4.3.5",
     "winston": "2.4.2",
     "yarn": "1.22.10"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

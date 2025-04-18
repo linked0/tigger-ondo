@@ -223,6 +223,74 @@ export const ropsten: Addresses = {
   },
 };
 
+export const marigold: Addresses = {
+  sushi: {
+    router: "",
+    factory: "",
+    token: "",
+    chef: "",
+    xsushi: "",
+    chef2: "",
+    pools: {
+      cvx_eth: "",
+      eden_eth: "",
+    },
+  },
+  uniswap,
+  zero: zero,
+  assets: {
+    dai: "0x6b175474e89094c44da98b954eedeac495271d0f",
+    wbtc: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+    usdc: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    badger: "0x3472A5A71965499acd81997a54BBA8D852C6E53d",
+    tbtc: "0x8dAEBADE922dF735c38C80C7eBD708Af50815fAa",
+    weth: "0xc778417e063141139fce010982780140aa0cd5ab",
+    link: "",
+    usdt: "",
+  },
+  alchemix: {
+    token: "0xdBdb4d16EdA451D0503b854CF79D55697F90c8DF",
+    pool: "0xAB8e74017a8Cc7c15FFcCd726603790d26d7DeCa",
+    slp: "0xc3f279090a47e80990fe3a9c30d24cb117ef91a8",
+  },
+  cvx: {
+    token: "",
+    slp: "",
+    pool: "",
+    rewards: "",
+  },
+  ygg: {
+    token: "",
+    slp: "",
+  },
+  bit: {
+    token: "",
+    slp: "",
+  },
+  wsteth: {
+    token: "",
+    slp: "",
+  },
+  ldo: {
+    token: "",
+  },
+  bond: {
+    token: "",
+    rewardStakingPool: "",
+    yieldFarm: "",
+  },
+  eden: {
+    token: "",
+    rewardManager: "",
+  },
+  dpx: {
+    token: "",
+  },
+  rdpx: {
+    token: "",
+  },
+};
+
 export interface Addresses {
   sushi: {
     router: string;

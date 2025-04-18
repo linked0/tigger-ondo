@@ -6,6 +6,17 @@
 
 [![CI](https://github.com/ondoprotocol/ondo-protocol/actions/workflows/nodejs.yml/badge.svg)](https://github.com/ondoprotocol/ondo-protocol/actions/workflows/nodejs.yml)
 
+This is forked from `ondoprotocol/ondo-v1`.
+
+## Env
+```
+cp .env.sample .env
+```
+Setting Alchemy or Infura API URL in `.env`
+```
+MAINNET_RPC_URL='https://eth-mainnet.alchemyapi.io/v2/api_key_here'
+```
+
 ## Install
 
 ```sh
@@ -109,3 +120,54 @@ This will run all tests and report on gas usage.
 ```sh
 REPORT_GAS=true yarn hardhat test
 ```
+
+## Summary of addresses
+| Provider  |  Contract | Desc |
+| --------  | -------- |  ---- |
+| sushi     |  router  | RouterV2 |
+|           |  factory | RouterV2 |
+|           |  token   | RouterV2 |
+|           |  chef    | RouterV2 |
+|           |  xsushi  | RouterV2 |
+|           | chef2    | RouterV2 |
+|           | cvx_eth  | RouterV2 |
+|           | eden_eth | RouterV2|
+| uniswap   | router   | RouterV2 |
+|           | factory  |       | 
+|           | uniWeth   |       | 
+|           | token   |       | 
+|           | usdc_bond   |       | 
+|           | weth_dpx   |       | 
+|           | weth_rdpx   |       | 
+| assets    | dai        |       | 
+|           | wbtc   |       | 
+|           | usdc   |       | 
+|           | badger   |       | 
+|           | tbtc   |       | 
+|           | weth   |       | 
+|           | link   |       | 
+|           | usdt   |       | 
+
+## Summary 2 of addresses
+| Provider  |  Contract | Desc |
+| --------  | -------- |  ---- |
+| alchemix  | token   |       | 
+|           | pool   |       | 
+|           | slp   |       | 
+| cvx       | token   |       | 
+|           | slp   |       | 
+|           | rewards   |       | 
+| ygg       | token   |       | 
+|           | slp   |       | 
+| bit       | token   |       | 
+|           | slp   |       | 
+| wsteth    | token   |       | 
+|           | slp   |       | 
+| ldo       | token   |       | 
+| bond      | token   |       | 
+|           | rewardStakingPool   |       | 
+|           | yieldFarm   |       | 
+| ygg       | token   |       | 
+|           | rewardManager   |       | 
+| dpx       | token   |       | 
+| rdpx      | token   |       | 

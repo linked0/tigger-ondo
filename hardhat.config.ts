@@ -66,6 +66,12 @@ const config: HardhatUserConfig = {
       url: process.env.ROPSTEN_RPC_URL!,
       gas: 5000000,
     },
+    marigold: {
+      accounts: [process.env.TESTNET_PRIVATE_KEY!],
+      timeout: 60 * 30 * 1000,
+      url: process.env.MARIGOLD_RPC_URL!,
+      gas: 5000000,
+    },
     rinkeby: {
       accounts: [process.env.TESTNET_PRIVATE_KEY!],
       url: process.env.RINKEBY_RPC_URL,
@@ -118,7 +124,8 @@ const config: HardhatUserConfig = {
     deployer: 0,
   },
   gasReporter: {
-    enabled: process.env.REPORT_GAS ? true : false,
+    enabled: false,
+    // enabled: process.env.REPORT_GAS ? true : false,
   },
   paths: {
     deploy: multichain.getDeployPaths(),

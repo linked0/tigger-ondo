@@ -245,9 +245,10 @@ contract Ondo is Ownable {
     bytes32 digest =
       keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
     address signatory = ecrecover(digest, v, r, s);
+    console.log("domainSeparator:", toHexString(domainSeparator));
+    console.log("structHash:", toHexString(structHash));
+    console.log("digest:", toHexString(digest));
     console.log("signatory:", signatory);
-    console.log("owner:", owner());
-    console.log("delegate:", delegatee);
     require(signatory != address(0), "Ondo::delegateBySig: invalid signature");
     require(nonce == nonces[signatory]++, "Ondo::delegateBySig: invalid nonce");
     require(
@@ -255,6 +256,16 @@ contract Ondo is Ownable {
       "Ondo::delegateBySig: signature expired"
     );
     return _delegate(signatory, delegatee);
+  }
+
+  function toHexString(bytes32 data) public pure returns (string memory) {
+    bytes memory alphabet = "0123456789abcdef";
+    bytes memory str = new bytes(64);
+    for (uint256 i = 0; i < 32; i++) {
+      str[i * 2] = alphabet[uint8(data[i] >> 4)];
+      str[1 + i * 2] = alphabet[uint8(data[i] & 0x0f)];
+    }
+    return string(str);
   }
 
   /**

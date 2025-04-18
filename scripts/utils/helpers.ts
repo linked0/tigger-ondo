@@ -26,6 +26,8 @@ export const getAddress = (hre: HardhatRuntimeEnvironment) => {
     return allAddresses.rinkeby;
   } else if (hre.network.name == "ropsten") {
     return allAddresses.ropsten;
+  } else if (hre.network.name == "marigold") {
+    return allAddresses.marigold;
   } else {
     return allAddresses.mainnet;
   }

@@ -9,6 +9,7 @@ const deployUniswap: DeployFunction = async () => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
   const address = getAddress(hre);
+  console.log("address", address);
   const registry = await ethers.getContract("Registry");
   await deploy("UniswapStrategy", {
     from: deployer,
